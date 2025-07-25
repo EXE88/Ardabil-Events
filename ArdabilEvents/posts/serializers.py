@@ -6,12 +6,8 @@ class CreatePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = CreatePost
         fields = ['id','user','subject_choise','image','title','description','latitude','longitude']
-
-    def validate_user(self,value):
-        if User.objects.filter(id=value).exists():
-            return value
-        raise serializers.ValidationError("user doesnt exists.")
-    
+        read_only_fields = ['user']
+        
     def validate_subject_choise(self,value):
         if str(value) in dict(CreatePost.Subject.choices):
             return value
