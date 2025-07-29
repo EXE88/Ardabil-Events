@@ -11,6 +11,11 @@ class PostCrudView(APIView):
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
 
+    def get(self,request):
+        posts = CreatePost.objects.filter(user=request.user)
+        serializer = CreatePostSerializer(posts, many=True)
+        return Response(serializer.data, status=200)
+
     def post(self,request):
         serializer = CreatePostSerializer(data=request.data)        
         if serializer.is_valid():
