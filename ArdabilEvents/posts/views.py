@@ -74,3 +74,11 @@ class PostCrudView(APIView):
 
             return Response(serializer.data, status=200)
         return Response(serializer.errors, status=400)
+    
+class LastFiftyPost(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        posts = CreatePost.objects.all().order_by('-created_at')[:50]
+        serializer = CreatePostSerializer(posts, many=True)
+        return Response(serializer.data, status=200)
